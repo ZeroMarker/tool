@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="本地待办清单 — 数据保存在浏览器 localStorage，无需登录，不依赖服务器。" />
+    <meta name="theme-color" content="#0f172a" />
+    <title>待办清单 | ZeroMarker Tools</title>
+
+    <script>
+        try {
+            const storedTheme = localStorage.getItem('theme');
+            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+            document.documentElement.dataset.theme = storedTheme || (prefersLight ? 'light' : 'dark');
+        } catch {
+            document.documentElement.dataset.theme = 'dark';
+        }
+    </script>
+
+    <link rel="icon" href="https://zeromarker.github.io/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="./todo.css" />
+</head>
+<body>
+    <!-- 主题切换 -->
+    <button class="theme-toggle" type="button" aria-label="切换为浅色主题" title="切换主题">
+        <span aria-hidden="true">🌙</span>
+    </button>
+
+    <main class="page-shell" style="padding-top:3rem;justify-content:flex-start">
+        <!-- 面包屑导航 -->
+        <nav style="margin-bottom:1.5rem;font-size:0.92rem">
+            <a href="https://zeromarker.github.io/#tools" style="color:var(--accent-hover)">← 返回个人网站</a>
+        </nav>
+
+        <header class="hero" style="margin-bottom:2rem">
+            <p class="eyebrow">ZeroMarker Tools</p>
+            <h1 style="font-size:clamp(1.8rem,5vw,2.8rem)">待办清单</h1>
+            <p class="subtitle">纯本地待办：数据只保存在浏览器里，不联网、不登录、不怕丢。</p>
+        </header>
+
+        <section class="todo-card" aria-label="待办清单">
+            <!-- 输入区 -->
+            <form class="todo-form" id="todoForm">
+                <input type="text" id="todoInput" class="todo-input" placeholder="想做点什么？回车添加" autocomplete="off" maxlength="200" />
+                <select id="prioritySelect" class="priority-select" aria-label="优先级">
+                    <option value="0">无</option>
+                    <option value="1">低</option>
+                    <option value="2" selected>中</option>
+                    <option value="3">高</option>
+                </select>
+                <button type="submit" class="add-btn">添加</button>
+            </form>
+
+            <!-- 筛选 -->
+            <div class="todo-tabs" role="tablist" aria-label="筛选待办">
+                <button type="button" class="tab is-active" data-filter="all">全部</button>
+                <button type="button" class="tab" data-filter="active">进行中</button>
+                <button type="button" class="tab" data-filter="done">已完成</button>
+            </div>
+
+            <!-- 列表 -->
+            <ul class="todo-list" id="todoList"></ul>
+
+            <!-- 空状态 -->
+            <p class="empty-state is-hidden" id="emptyState"></p>
+
+            <!-- 底部 -->
+            <footer class="todo-footer">
+                <span id="remainCount">0 项待办</span>
+                <button type="button" class="clear-btn" id="clearDoneBtn">清除已完成</button>
+            </footer>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        © 2026 Zeromark
+    </footer>
+
+    <script src="./todo.js" defer></script>
+</body>
+</html>
